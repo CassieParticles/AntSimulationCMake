@@ -1,21 +1,29 @@
+#include <iostream>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Main.hpp>
 #include <SFML/Graphics.hpp>
+#include <memory>
+
+#include "TaskParallelism/TaskFarmAnts.h"
+#include "Simulation/AntManager.h"
+#include "graphics/WindowManager.h"
+
+
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
-    window.setFramerateLimit(144);
+	AntManager antManager(32, sf::Vector2f(512, 512));
+	TaskFarm farm(16,&antManager);
+	WindowManager windowManager;
+	
 
-    while (window.isOpen())
-    {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
+	//farm.addAntManager(&manager);
 
-        window.clear();
-        window.display();
-    }
+	while (windowManager.getWindowOpen())
+	{
+		windowManager.windowLoop();
+	}
+
+	return 0;
 }
